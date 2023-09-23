@@ -189,10 +189,37 @@ const editBookByIdHandler = (request, h) => {
   return response
 }
 
+/* Delete Book */
+const deleteBookByIdHandler = (request, h) => {
+  /* Retrieve path paramater */
+  const { bookId } = request.params
+
+  /* Check book id exist or not */
+  const index = books.findIndex((book) => book.id === bookId)
+  /* Data found */
+  if (index !== -1) {
+    books.splice(index, 1)
+    const response = h.response({
+      status: 'success',
+      message: 'Buku berhasil dihapus'
+    })
+    response.code(200)
+    return response
+  }
+  /* Data not found */
+  const response = h.response({
+    status: 'fail',
+    message: 'Buku gagal dihapus. Id tidak ditemukan'
+  })
+  response.code(404)
+  return response
+}
+
 /* Export Module */
 module.exports = {
   addBookHandler,
   getAllBooksHandler,
   getBookByIdHandler,
-  editBookByIdHandler
+  editBookByIdHandler,
+  deleteBookByIdHandler
 }

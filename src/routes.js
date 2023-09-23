@@ -3,7 +3,8 @@ const {
   addBookHandler,
   getAllBooksHandler,
   getBookByIdHandler,
-  editBookByIdHandler
+  editBookByIdHandler,
+  deleteBookByIdHandler
 } = require('./handler')
 
 /* Method/Verb Request */
@@ -30,6 +31,12 @@ const routes = [{
   method: 'PUT',
   path: '/books/{bookId}',
   handler: editBookByIdHandler
+},
+{
+  /* Delete Book */
+  method: 'DELETE',
+  path: '/books/{bookId}',
+  handler: deleteBookByIdHandler
 }]
 
 /* Export Module */
