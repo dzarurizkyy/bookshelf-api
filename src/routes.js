@@ -1,5 +1,8 @@
 /* Import Module */
-const { addBookHandler } = require('./handler')
+const {
+  addBookHandler,
+  getAllBooksHandler
+} = require('./handler')
 
 /* Method/Verb Request */
 const routes = [{
@@ -7,6 +10,12 @@ const routes = [{
   method: 'POST',
   path: '/books',
   handler: addBookHandler
+},
+{
+  /* Display All Books */
+  method: 'GET',
+  path: '/books',
+  handler: getAllBooksHandler
 }]
 
 /* Export Module */

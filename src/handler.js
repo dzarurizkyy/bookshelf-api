@@ -83,5 +83,21 @@ const addBookHandler = (request, h) => {
   return response
 }
 
+/* Display All Books */
+const getAllBooksHandler = () => ({
+  status: 'success',
+  data: {
+    /* Filter to only retrieve specific properties and values */
+    books: books.map((book) => ({
+      id: book.id,
+      name: book.name,
+      publisher: book.publisher
+    }))
+  }
+})
+
 /* Export Module */
-module.exports = { addBookHandler }
+module.exports = {
+  addBookHandler,
+  getAllBooksHandler
+}
