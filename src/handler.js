@@ -84,17 +84,51 @@ const addBookHandler = (request, h) => {
 }
 
 /* Display All Books */
-const getAllBooksHandler = () => ({
-  status: 'success',
-  data: {
-    /* Filter to only retrieve specific properties and values */
-    books: books.map((book) => ({
-      id: book.id,
-      name: book.name,
-      publisher: book.publisher
-    }))
+const getAllBooksHandler = (request, h) => {
+  /* Retrieve query parameter */
+  const { name } = request.query
+  /* Display all books that book name specified on query paramater */
+  if (name) {
+    const filterBook = books.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()))
+    if (filterBook !== undefined) {
+      /* Book data found */
+      const response = h.response({
+        status: 'success',
+        data: {
+          /* Filter to only retrieve specific properties and values */
+          books: filterBook.map((book) => ({
+            id: book.id,
+            name: book.name,
+            publisher: book.publisher
+          }))
+        }
+      })
+      response.code(200)
+      return response
+    } else {
+      /* Book data not found */
+      const response = h.response({
+        status: 'fail',
+        message: 'Buku tidak ditemukan'
+      })
+      response.code(404)
+      return response
+    }
+  } else {
+    const response = h.response({
+      status: 'success',
+      data: {
+        /* Filter to only retrieve specific properties and values */
+        books: books.map((book) => ({
+          id: book.id,
+          name: book.name,
+          publisher: book.publisher
+        }))
+      }
+    })
+    return response
   }
-})
+}
 
 /* Display Selected Book */
 const getBookByIdHandler = (request, h) => {
