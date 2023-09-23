@@ -2,7 +2,8 @@
 const {
   addBookHandler,
   getAllBooksHandler,
-  getBookByIdHandler
+  getBookByIdHandler,
+  editBookByIdHandler
 } = require('./handler')
 
 /* Method/Verb Request */
@@ -23,6 +24,12 @@ const routes = [{
   method: 'GET',
   path: '/books/{bookId}',
   handler: getBookByIdHandler
+},
+{
+  /* Edit Book */
+  method: 'PUT',
+  path: '/books/{bookId}',
+  handler: editBookByIdHandler
 }]
 
 /* Export Module */

@@ -119,9 +119,80 @@ const getBookByIdHandler = (request, h) => {
   return response
 }
 
+/* Edit Book */
+const editBookByIdHandler = (request, h) => {
+  /* Retrieve path parameter */
+  const { bookId } = request.params
+  /* User-Input Objects */
+  const {
+    name,
+    year,
+    author,
+    summary,
+    publisher,
+    pageCount,
+    readPage,
+    reading
+  } = request.payload
+  /* Automatic Objects */
+  const updatedAt = new Date().toISOString()
+
+  /* Check user input name or not */
+  if (!name) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal memperbarui buku. Mohon isi nama buku'
+    })
+    response.code(400)
+    return response
+  }
+
+  /* Check user input readPage value more than pageCount value or not */
+  if (readPage > pageCount) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount'
+    })
+    response.code(400)
+    return response
+  }
+
+  /* Check book id exist or not */
+  const index = books.findIndex((book) => book.id === bookId)
+  /* Data found */
+  if (index !== -1) {
+    books[index] = {
+      ...books[index],
+      name,
+      year,
+      author,
+      summary,
+      publisher,
+      pageCount,
+      readPage,
+      reading,
+      updatedAt
+    }
+    const response = h.response({
+      status: 'success',
+      message: 'Buku berhasil diperbarui'
+    })
+    response.code(200)
+    return response
+  }
+  /* Data not found */
+  const response = h.response({
+    status: 'fail',
+    message: 'Gagal memperbarui buku. Id tidak ditemukan'
+  })
+  response.code(404)
+  return response
+}
+
 /* Export Module */
 module.exports = {
   addBookHandler,
   getAllBooksHandler,
-  getBookByIdHandler
+  getBookByIdHandler,
+  editBookByIdHandler
 }
