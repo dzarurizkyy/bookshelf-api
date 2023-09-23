@@ -1,7 +1,8 @@
 /* Import Module */
 const {
   addBookHandler,
-  getAllBooksHandler
+  getAllBooksHandler,
+  getBookByIdHandler
 } = require('./handler')
 
 /* Method/Verb Request */
@@ -16,6 +17,12 @@ const routes = [{
   method: 'GET',
   path: '/books',
   handler: getAllBooksHandler
+},
+{
+  /* Display Selected Book */
+  method: 'GET',
+  path: '/books/{bookId}',
+  handler: getBookByIdHandler
 }]
 
 /* Export Module */
