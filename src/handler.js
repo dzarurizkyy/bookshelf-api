@@ -6,7 +6,7 @@ const books = require('./books')
 
 /* Add Book Handler */
 const addBookHandler = (request, h) => {
-  /* User-Input Objects */
+  /* User-Input Property */
   const {
     name,
     year,
@@ -17,7 +17,7 @@ const addBookHandler = (request, h) => {
     readPage,
     reading
   } = request.payload
-  /* Automatic Objects */
+  /* Automatic Property */
   const id = nanoid(16)
   const finished = pageCount === readPage
   const insertedAt = new Date().toISOString()
@@ -61,7 +61,7 @@ const addBookHandler = (request, h) => {
   books.push(newBook)
 
   /* Check book data successfully saved or not */
-  const isSuccess = books.filter((book) => book.name === name).length > 0
+  const isSuccess = books.filter((book) => book.id === id).length > 0
   /* Success */
   if (isSuccess) {
     const response = h.response({
@@ -85,7 +85,7 @@ const addBookHandler = (request, h) => {
 
 /* Display All Books */
 const getAllBooksHandler = (request, h) => {
-  /* Retrieve query parameter */
+  /* Retrieve query parameters */
   const { name, reading, finished } = request.query
 
   /* Book name specified on query paramaters */
@@ -117,7 +117,7 @@ const getAllBooksHandler = (request, h) => {
     }
   }
 
-  /* Reading finished specified on query paramater */
+  /* Reading specified on query paramaters */
   if (reading === '1' || reading === '0') {
     let readingBooks = null
 
@@ -145,7 +145,7 @@ const getAllBooksHandler = (request, h) => {
     }
   }
 
-  /* Finished specified on query paramater */
+  /* Finished specified on query paramaters */
   if (finished === '1' || finished === '0') {
     let finishedBooks = null
 
@@ -185,6 +185,7 @@ const getAllBooksHandler = (request, h) => {
       }))
     }
   })
+  response.code(200)
   return response
 }
 
@@ -215,7 +216,8 @@ const getBookByIdHandler = (request, h) => {
 const editBookByIdHandler = (request, h) => {
   /* Retrieve path parameter */
   const { bookId } = request.params
-  /* User-Input Objects */
+
+  /* User-Input Property */
   const {
     name,
     year,
@@ -226,7 +228,7 @@ const editBookByIdHandler = (request, h) => {
     readPage,
     reading
   } = request.payload
-  /* Automatic Objects */
+  /* Automatic Property */
   const updatedAt = new Date().toISOString()
 
   /* Check user input name or not */
