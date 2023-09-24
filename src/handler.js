@@ -86,17 +86,18 @@ const addBookHandler = (request, h) => {
 /* Display All Books */
 const getAllBooksHandler = (request, h) => {
   /* Retrieve query parameter */
-  const { name } = request.query
-  /* Display all books that book name specified on query paramater */
+  const { name, reading, finished } = request.query
+
+  /* Book name specified on query paramaters */
   if (name) {
-    const filterBook = books.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()))
-    if (filterBook !== undefined) {
+    const filterBooks = books.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()))
+    if (filterBooks !== undefined) {
       /* Book data found */
       const response = h.response({
         status: 'success',
         data: {
           /* Filter to only retrieve specific properties and values */
-          books: filterBook.map((book) => ({
+          books: filterBooks.map((book) => ({
             id: book.id,
             name: book.name,
             publisher: book.publisher
@@ -114,7 +115,30 @@ const getAllBooksHandler = (request, h) => {
       response.code(404)
       return response
     }
+  }
+
+  /* Reading or finished specified on query paramater */
+  if (reading === '1' || reading === '0' || finished === '1' || finished === '0') {
+    /* Reading */
+    if (reading === '1' || reading === '0') {
+      const readingBooks = books.filter((book) => book.reading === Boolean(reading))
+      if (readingBooks !== undefined) {
+        const response = h.response({
+          status: 'success',
+          data: {
+            books: readingBooks.map((book) => ({
+              id: book.id,
+              name: book.name,
+              publisher: book.publisher
+            }))
+          }
+        })
+        response.code(200)
+        return response
+      }
+    }
   } else {
+    /* Display books without query parameters */
     const response = h.response({
       status: 'success',
       data: {
