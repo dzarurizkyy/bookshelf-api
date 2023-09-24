@@ -117,41 +117,75 @@ const getAllBooksHandler = (request, h) => {
     }
   }
 
-  /* Reading or finished specified on query paramater */
-  if (reading === '1' || reading === '0' || finished === '1' || finished === '0') {
-    /* Reading */
-    if (reading === '1' || reading === '0') {
-      const readingBooks = books.filter((book) => book.reading === Boolean(reading))
-      if (readingBooks !== undefined) {
-        const response = h.response({
-          status: 'success',
-          data: {
-            books: readingBooks.map((book) => ({
-              id: book.id,
-              name: book.name,
-              publisher: book.publisher
-            }))
-          }
-        })
-        response.code(200)
-        return response
-      }
+  /* Reading finished specified on query paramater */
+  if (reading === '1' || reading === '0') {
+    let readingBooks = null
+
+    if (reading === '1') {
+      /* Reading */
+      readingBooks = books.filter((book) => book.reading === true)
+    } else {
+      /* Not Reading */
+      readingBooks = books.filter((book) => book.reading === false)
     }
-  } else {
-    /* Display books without query parameters */
-    const response = h.response({
-      status: 'success',
-      data: {
-        /* Filter to only retrieve specific properties and values */
-        books: books.map((book) => ({
-          id: book.id,
-          name: book.name,
-          publisher: book.publisher
-        }))
-      }
-    })
-    return response
+
+    if (readingBooks !== undefined) {
+      const response = h.response({
+        status: 'success',
+        data: {
+          books: readingBooks.map((book) => ({
+            id: book.id,
+            name: book.name,
+            publisher: book.publisher
+          }))
+        }
+      })
+      response.code(200)
+      return response
+    }
   }
+
+  /* Finished specified on query paramater */
+  if (finished === '1' || finished === '0') {
+    let finishedBooks = null
+
+    if (finished === '1') {
+      /* Finished Reading */
+      finishedBooks = books.filter((book) => book.finished === true)
+    } else {
+      /* Unfinished Reading */
+      finishedBooks = books.filter((book) => book.finished === false)
+    }
+
+    if (finishedBooks !== undefined) {
+      const response = h.response({
+        status: 'success',
+        data: {
+          books: finishedBooks.map((book) => ({
+            id: book.id,
+            name: book.name,
+            publisher: book.publisher
+          }))
+        }
+      })
+      response.code(200)
+      return response
+    }
+  }
+
+  /* Display books without query parameters */
+  const response = h.response({
+    status: 'success',
+    data: {
+      /* Filter to only retrieve specific properties and values */
+      books: books.map((book) => ({
+        id: book.id,
+        name: book.name,
+        publisher: book.publisher
+      }))
+    }
+  })
+  return response
 }
 
 /* Display Selected Book */
